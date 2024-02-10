@@ -1,4 +1,6 @@
-body{margin-top:20px;}
+.content {
+    max-height: 60vh!important;
+}
 
 .chat-online {
     color: #34ce57
@@ -11,7 +13,7 @@ body{margin-top:20px;}
 .chat-messages {
     display: flex;
     flex-direction: column;
-    max-height: 800px;
+    max-height: 60vh;
     overflow-y: scroll
 }
 

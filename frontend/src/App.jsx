@@ -1,9 +1,9 @@
 import './App.css'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import NavbarLoggedOut from "./components/NavbarLoggedOut";
-import Message from './components/Message'
+import Chat from './components/chat/Chat';
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <NavbarLoggedOut />
         <Routes>
-          <Route path="/inbox" Component={Message}/>
+          <Route path="/inbox" Component={Chat}/>
         </Routes>
       </BrowserRouter>
     </>
