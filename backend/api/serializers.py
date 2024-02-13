@@ -3,10 +3,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from api.models import User, Todo, ChatMessage, Profile
+from api.models import User, ChatMessage, Profile
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = ('id', 'username', 'email')
@@ -51,13 +50,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
-    
-
-class TodoSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Todo
-        fields = ['id', 'user', 'title', 'completed']
 
 
 class ProfileSerializer(serializers.ModelSerializer):
