@@ -33,17 +33,17 @@ class MyInbox(generics.ListAPIView):
 
         message_partners = User.objects.filter(Q(sender__receiver=user) | Q(receiver__sender=user)).distinct()
 
-        conversations = []
+        chats = []
 
         for partner in message_partners:
             messages = ChatMessage.objects.filter(
                 Q(sender=user, receiver=partner) | Q(sender=partner, receiver=user)
             ).order_by('date')
-            conversations.append(messages)
-
-        conversations = chain(*conversations)
-
-        return conversations
+            chats.append(messages)
+            
+        chats = chain(*chats)
+        
+        return chats
     
     def get(self, request, *args, **kwargs):
         # user = request.user
