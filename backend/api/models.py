@@ -9,6 +9,7 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+    @property
     def profile(self):
         profile = Profile.objects.get(user=self)
 
@@ -38,7 +39,6 @@ post_save.connect(save_user_profile, sender=User)
 
 
 class ChatMessage(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="user")
     sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="sender")
     receiver = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="receiver")
     message = models.CharField(max_length=10000)
@@ -47,10 +47,7 @@ class ChatMessage(models.Model):
     
     class Meta:
         ordering = ['date']
-        verbose_name_plural = "Message"
-
-    def __str__(self):
-        return f"{self.sender} to {self.receiver}"
+        verbose_name_plural = "Messages"
 
     @property
     def sender_profile(self):
@@ -61,8 +58,7 @@ class ChatMessage(models.Model):
     def receiver_profile(self):
         receiver_profile = Profile.objects.get(user=self.receiver)
         return receiver_profile
-    
 
-# Evitar conflictos con related_name para groups y user_permissions
-# User.groups.related_query_name = 'user_groups'
-# User.user_permissions.related_query_name = 'user_permissions'
+    def __str__(self):
+        return f"{self.sender} to {self.receiver}"
+    

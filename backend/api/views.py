@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-from django.db.models import OuterRef, Subquery
+from itertools import chain
+
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -29,22 +29,28 @@ class MyInbox(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
+        user = get_object_or_404(User, id=user_id)
 
-        messages = ChatMessage.objects.filter(
-            id__in=Subquery(
-                User.objects.filter(
-                    Q(sender__receiver=user_id) | Q(receiver__sender=user_id)
-                ).distinct().annotate(
-                    last_msg=Subquery(
-                        ChatMessage.objects.filter(
-                            Q(sender=OuterRef('id'), receiver=user_id) | Q(receiver=OuterRef('id'), sender=user_id)
-                        ).order_by('-id')[:1].values_list('id', flat=True) 
-                    )
-                ).values_list('last_msg', flat=True).order_by("-id")
-            )
-        ).order_by("-id")
-            
-        return messages
+        message_partners = User.objects.filter(Q(sender__receiver=user) | Q(receiver__sender=user)).distinct()
+
+        conversations = []
+
+        for partner in message_partners:
+            messages = ChatMessage.objects.filter(
+                Q(sender=user, receiver=partner) | Q(sender=partner, receiver=user)
+            ).order_by('date')
+            conversations.append(messages)
+
+        conversations = chain(*conversations)
+
+        return conversations
+    
+    def get(self, request, *args, **kwargs):
+        # user = request.user
+        # print(user)
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
     
 
 class GetMessages(generics.ListAPIView):

@@ -53,7 +53,6 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Profile
         fields = ['id', 'user', 'full_name', 'image']
@@ -65,4 +64,4 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatMessage
-        fields = ['id', 'sender', 'receiver', 'receiver_profile', 'sender_profile', 'message', 'is_read', 'date']
+        fields = ['message', 'is_read', 'date', 'sender_profile', 'receiver_profile']
