@@ -55,7 +55,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'full_name', 'image']
+        fields = ['id', 'full_name', 'image']
 
 
 class MessageSerializer(serializers.ModelSerializer):

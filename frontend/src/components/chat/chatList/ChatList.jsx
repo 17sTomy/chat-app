@@ -61,8 +61,8 @@ const userInbox = [
   },
 ];
 
-export default function ChatList() {
-  const [chats, seChats] = useState(userInbox)
+export default function ChatList({ contacts }) {
+  const [chats, setChats] = useState(userInbox)
 
   return (
     <div className="main__chatlist">
@@ -74,7 +74,7 @@ export default function ChatList() {
       </div>
       <div className="chatList__search">
         <div className="search_wrap">
-          <input type="text" placeholder="Search Here" required />
+          <input type="text" placeholder="Search..." required />
           <button className="search-btn">
             <i className="fa fa-search"></i>
           </button>
