@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useParams } from 'react-router-dom';
 import "./chatContent.css";
 import Avatar from "../chatList/Avatar";
 import ChatItem from "./ChatItem";
@@ -55,10 +56,11 @@ let chatItms = [
   },
 ];
  
-function ChatContent() {
+function ChatContent({ chatMessages }) {
   const messagesEndRef = useRef(null);
   const [chat, setChat] = useState(chatItms);
   const [msg, setMsg] = useState("");
+  const { id } = useParams();
 
   const sendMessage = (e) => {
     if (msg.trim() !== "") {
@@ -95,64 +97,73 @@ function ChatContent() {
   
 
   const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
-
+  
   const onStateChange = (e) => {
     setMsg(e.target.value);
   };
 
   return (
+    <>
+    {id ? (
     <div className="main__chatcontent">
-      <div className="content__header">
-        <div className="blocks">
-          <div className="current-chatting-user">
-            <Avatar
-              isOnline="active"
-              image="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU"
-            />
-            <p>Tim Hover</p>
+        <div className="content__header">
+          <div className="blocks">
+            <div className="current-chatting-user">
+              <Avatar
+                isOnline="active"
+                image="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU"
+              />
+              <p>Tim Hover</p>
+            </div>
+          </div>
+          <div className="blocks">
+            <div className="settings">
+              <button className="btn-nobg">
+                <i className="fa fa-cog"></i>
+              </button>
+            </div>
           </div>
         </div>
-
-        <div className="blocks">
-          <div className="settings">
-            <button className="btn-nobg">
-              <i className="fa fa-cog"></i>
+        <div className="content__body">
+          <div className="chat__items">
+            {chat.map((itm) => (
+              <ChatItem
+                key={itm.key}
+                user={itm.type ? itm.type : "me"}
+                msg={itm.msg}
+                image={itm.image}
+              />
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+        </div>
+        <div className="content__footer">
+          <div className="sendNewMessage">
+            <button className="addFiles">
+              <i className="fa fa-plus"></i>
+            </button>
+            <input
+              type="text"
+              placeholder="Type a message here"
+              onChange={onStateChange}
+              value={msg}
+            />
+            <button className="btnSendMsg" id="sendMsgBtn" onClick={sendMessage}>
+              <i className="fa fa-paper-plane"></i>
             </button>
           </div>
         </div>
-      </div>
-      <div className="content__body">
-        <div className="chat__items">
-          {chat.map((itm) => (
-            <ChatItem
-              key={itm.key}
-              user={itm.type ? itm.type : "me"}
-              msg={itm.msg}
-              image={itm.image}
-            />
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
-      </div>
-      <div className="content__footer">
-        <div className="sendNewMessage">
-          <button className="addFiles">
-            <i className="fa fa-plus"></i>
-          </button>
-          <input
-            type="text"
-            placeholder="Type a message here"
-            onChange={onStateChange}
-            value={msg}
-          />
-          <button className="btnSendMsg" id="sendMsgBtn" onClick={sendMessage}>
-            <i className="fa fa-paper-plane"></i>
-          </button>
-        </div>
-      </div>
     </div>
+    ) : (
+      <div className="main__chatcontent" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+        <h4>Clickee un chat para empezar o seguir una conversación😃</h4>
+      </div>
+    )}
+    </>
   );
 };
 

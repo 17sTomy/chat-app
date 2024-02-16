@@ -5,13 +5,13 @@ import ChatContent from "./chatContent/ChatContent";
 import axios from 'axios';
 
 export default function Chat() {
-  const [messages, setMessages] = useState([]);
+  const [chatMessages, setChatMessages] = useState([]);
   const [contacts, setContacts] = useState([]);
   
   const fetchData = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/api/my-messages/1/');
-      setMessages(response.data)
+      setChatMessages(response.data)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -24,6 +24,7 @@ export default function Chat() {
     });
 
     const filteredContacts = contacts.filter(contact => contact.id !== userId);
+    console.log("Contactos:", filteredContacts);
     return filteredContacts;
   };
 
@@ -32,17 +33,16 @@ export default function Chat() {
   }, []);
   
   useEffect(() => {
-    console.log(messages);
-    const contactos = getContacts(messages, 1)
+    console.log("Mensajes:", chatMessages);
+    const contactos = getContacts(chatMessages, 1)
     setContacts(contactos)
-    // console.log(contacts);
-  }, [messages]);
+  }, [chatMessages]);
 
 
   return (
     <div className="main__chatbody">
       <ChatList contacts={contacts} />
-      <ChatContent />
+      <ChatContent chatMessages={chatMessages} />
     </div>
   );
 }

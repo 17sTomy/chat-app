@@ -11,7 +11,8 @@ function App() {
       <BrowserRouter>
         <NavbarLoggedOut />
         <Routes>
-          <Route path="/inbox" Component={Chat}/>
+          <Route path="/inbox" element={<Chat />}/>
+          <Route path="/inbox/:id" element={<Chat />}/>
         </Routes>
       </BrowserRouter>
     </>

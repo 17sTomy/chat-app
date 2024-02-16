@@ -81,14 +81,15 @@ export default function ChatList({ contacts }) {
         </div>
       </div>
       <div className="chatlist__items">
-        {chats.map((item) => {
+        {contacts.map((contact) => {
           return (
             <ChatListItems
-              name={item.name}
-              key={item.id}
-              active={item.active ? "active" : ""}
-              isOnline={item.isOnline ? "active" : ""}
-              image={item.image}
+              key={contact.id}
+              id={contact.id}
+              name={contact.full_name}
+              active={"active"}
+              isOnline={"active"}
+              // image={"/src/assets/default_profile_image.png"}
             />
           );
         })}
