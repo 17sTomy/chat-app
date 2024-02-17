@@ -42,7 +42,7 @@ export default function Chat() {
   return (
     <div className="main__chatbody">
       <ChatList contacts={contacts} />
-      <ChatContent chatMessages={chatMessages} />
+      <ChatContent contacts={contacts} chatMessages={chatMessages} />
     </div>
   );
 }

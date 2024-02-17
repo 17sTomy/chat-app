@@ -1,4 +1,5 @@
 from itertools import chain
+from operator import attrgetter
 
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -41,7 +42,7 @@ class MyInbox(generics.ListAPIView):
             ).order_by('date')
             chats.append(messages)
             
-        chats = chain(*chats)
+        chats = list(chain(*chats))
         
         return chats
     
