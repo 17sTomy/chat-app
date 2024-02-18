@@ -12,9 +12,8 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='auth_register'),
 
     # Chat/Text Messaging Functionality
-    path("my-messages/<user_id>/", views.MyInbox.as_view()),
-    path("get-messages/<sender_id>/<receiver_id>/", views.GetMessages.as_view()),
-    path("send-messages/", views.SendMessages.as_view()),
+    path("my-messages/<user_id>/", views.MyInboxListAPIView.as_view()),
+    path("send-message/", views.SendMessageCreateAPIView.as_view()),
 
     path("profile/<int:pk>/", views.ProfileDetail.as_view()),
     path("search/<username>/", views.SearchUser.as_view())

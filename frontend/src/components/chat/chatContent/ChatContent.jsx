@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import "./chatContent.css";
 import Avatar from "../chatList/Avatar";
 import ChatItem from "./ChatItem";
@@ -25,20 +26,25 @@ function ChatContent({ chatMessages, contacts }) {
 
   const getContactInfo = () => contacts.find((contact) => contact.id === parseInt(id));
   
-  const sendMessage = (e) => {
-    if (msg.trim() !== "") {
-      const newChatItem = {
-        key: 1,
-        type: "",
-        msg: msg,
-        image:
-          "https://media.istockphoto.com/id/1194645897/es/vector/retrato-de-una-mujer-fuerte-y-hermosa-de-perfil-con-el-pelo-rubio.jpg?s=612x612&w=0&k=20&c=IH1fHSzti02h2NhwBhUTkZgU9TEJ7a0DCIqr6JFZbe4=",
-      };
+  const sendMessage = async () => {
 
-      setChat([...chat, newChatItem]);
+    try {
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/send-message/', 
+        {
+          sender: 1,
+          receiver: contact.id,
+          message: msg,
+          is_read: false,
+        },
+      )
+      let newMsg = response.data;
+      setChat([...chat, newMsg]);
       scrollToBottom();
       setMsg("");
-    }
+    } catch (error) {
+      console.log("Error ocurrido", error);
+    };
   };
   
   const scrollToBottom = () => {

@@ -1,5 +1,4 @@
 from itertools import chain
-from operator import attrgetter
 
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -24,7 +23,7 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
     
 
-class MyInbox(generics.ListAPIView):
+class MyInboxListAPIView(generics.ListAPIView):
     serializer_class = MessageSerializer
     # permission_classes = [IsAuthenticated]
 
@@ -33,7 +32,6 @@ class MyInbox(generics.ListAPIView):
         user = get_object_or_404(User, id=user_id)
 
         message_partners = User.objects.filter(Q(sender__receiver=user) | Q(receiver__sender=user)).distinct()
-
         chats = []
 
         for partner in message_partners:
@@ -43,7 +41,6 @@ class MyInbox(generics.ListAPIView):
             chats.append(messages)
             
         chats = list(chain(*chats))
-        
         return chats
     
     def get(self, request, *args, **kwargs):
@@ -54,23 +51,7 @@ class MyInbox(generics.ListAPIView):
         return Response(serializer.data)
     
 
-class GetMessages(generics.ListAPIView):
-    serializer_class = MessageSerializer
-    # permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        sender_id = self.kwargs['sender_id']
-        receiver_id = self.kwargs['receiver_id']
-
-        messages = ChatMessage.objects.filter(
-            sender__in=[sender_id, receiver_id],
-            receiver__in=[sender_id, receiver_id]
-        )
-
-        return messages
-    
-
-class SendMessages(generics.CreateAPIView):
+class SendMessageCreateAPIView(generics.CreateAPIView):
     serializer_class = MessageSerializer
 
 

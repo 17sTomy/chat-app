@@ -64,4 +64,4 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatMessage
-        fields = ['id', 'message', 'date', 'is_read', 'sender_profile', 'receiver_profile']
+        fields = ['id', 'sender', 'receiver', 'message', 'date', 'is_read', 'sender_profile', 'receiver_profile']
