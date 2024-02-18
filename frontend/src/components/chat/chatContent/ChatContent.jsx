@@ -88,7 +88,7 @@ function ChatContent({ chatMessages, contacts }) {
   }, [id]);
 
   useEffect(() => {
-    contact ? readMessages() : null;
+    contact.id !== undefined ? readMessages() : null;
   }, [contact]);
   
   return (
