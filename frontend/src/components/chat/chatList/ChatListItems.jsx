@@ -20,7 +20,7 @@ export default function ChatListItems({ id, name, image, active, isOnline}) {
         className={`chatlist__item ${active ? active : ""}`}
       >
         <Avatar
-          image={image ? image : "/src/assets/default_profile_image.png"}
+          image={image}
           isOnline={isOnline}
         />
   

@@ -11,14 +11,14 @@ class User(AbstractUser):
 
     @property
     def profile(self):
-        profile = Profile.objects.get(user=self)
+        return Profile.objects.get(user=self)
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=1000)
     bio = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="user_images", default="default.jpg")
+    image = models.ImageField(default="default_user.png")
     verified = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):

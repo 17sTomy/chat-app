@@ -6,6 +6,7 @@
   }
   .content__header {
     height: 8vh;
+    margin-bottom: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid #ebe7fb;
   }
@@ -67,6 +68,7 @@
   .chat__item__content {
     background-color: #4462ff;
     color: #fff;
+    /* margin-top: 10px; */
     padding: 10px;
     border-radius: 10px 10px 0 10px;
     max-width: 50%;

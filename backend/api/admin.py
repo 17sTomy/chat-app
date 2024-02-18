@@ -6,7 +6,7 @@ class UserAdmin(admin.ModelAdmin):
 
 class ProfileAdmin(admin.ModelAdmin):
     list_editable = ['verified']
-    list_display = ['user', 'full_name', 'verified']
+    list_display = ['user', 'full_name', 'verified', 'image']
 
 class ChatMessageAdmin(admin.ModelAdmin):
     list_editable = ['is_read', 'message']

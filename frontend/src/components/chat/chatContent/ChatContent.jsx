@@ -134,7 +134,7 @@ function ChatContent({ chatMessages, contacts }) {
                 <div className="current-chatting-user">
                   <Avatar
                     isOnline="active"
-                    image={!contact.image ? contact.image : "/src/assets/default_profile_image.png"}
+                    image={contact.image}
                   />
                   <p>{contact.full_name}</p>
                 </div>
