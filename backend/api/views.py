@@ -3,12 +3,13 @@ from itertools import chain
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
-from rest_framework.response import Response
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import generics
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.mixins import UpdateModelMixin
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import permission_classes
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from api.models import User, Profile, ChatMessage
 from api.serializers import MyTokenObtainPairSerializer, RegisterSerializer, MessageSerializer, ProfileSerializer, UserSerializer
@@ -23,7 +24,7 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
     
 
-class MyInboxListAPIView(generics.ListAPIView):
+class GetMessagesListAPIView(generics.ListAPIView):
     serializer_class = MessageSerializer
     # permission_classes = [IsAuthenticated]
 
@@ -54,6 +55,24 @@ class MyInboxListAPIView(generics.ListAPIView):
 class SendMessageCreateAPIView(generics.CreateAPIView):
     serializer_class = MessageSerializer
 
+class ReadMessagesUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = MessageSerializer
+
+    def get_queryset(self):
+        sender_id = self.kwargs['sender_id']
+        receiver_id = self.kwargs['receiver_id']
+
+        return ChatMessage.objects.filter(
+            Q(sender=sender_id, receiver=receiver_id) | Q(sender=receiver_id, receiver=sender_id),
+            is_read=False
+        )
+    
+    def update(self, request, *args, **kwargs):
+        if self.get_queryset():
+            self.get_queryset().update(is_read=True)
+            return Response({'message': 'Mensajes marcados como leídos'})
+        return Response({'message': 'No se encontraron mensajes para marcar como leídos'})
+    
 
 class ProfileDetail(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer

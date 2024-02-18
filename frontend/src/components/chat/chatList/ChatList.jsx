@@ -32,7 +32,7 @@ export default function ChatList({ contacts, lastMessages }) {
               isOnline={"active"}
               image={contact.image}
               lastMessage={lastMessage ? lastMessage.message : "No hay mensajes"}
-              isRead={lastMessage ? lastMessage.isRead : "Error"}
+              isRead={lastMessage ? lastMessage.is_read : "Error"}
               senderId={lastMessage ? lastMessage.sender_profile.id : "Error"}
             />
           );

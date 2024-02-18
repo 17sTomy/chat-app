@@ -27,7 +27,6 @@ function ChatContent({ chatMessages, contacts }) {
   const getContactInfo = () => contacts.find((contact) => contact.id === parseInt(id));
   
   const sendMessage = async () => {
-
     try {
       const response = await axios.post(
         'http://127.0.0.1:8000/api/send-message/', 
@@ -43,7 +42,15 @@ function ChatContent({ chatMessages, contacts }) {
       scrollToBottom();
       setMsg("");
     } catch (error) {
-      console.log("Error ocurrido", error);
+      console.log("Ocurrió un error:", error);
+    };
+  };
+
+  const readMessages = async () => {
+    try {
+      await axios.patch(`http://127.0.0.1:8000/api/read-messages/${1}/${contact.id}/`)
+    } catch (error) {
+      console.log("Ocurrió un error:", error);
     };
   };
   
@@ -79,6 +86,10 @@ function ChatContent({ chatMessages, contacts }) {
     const contact = getContactInfo();
     contact ? setContact(contact) : null;
   }, [id]);
+
+  useEffect(() => {
+    contact ? readMessages() : null;
+  }, [contact]);
   
   return (
     <>

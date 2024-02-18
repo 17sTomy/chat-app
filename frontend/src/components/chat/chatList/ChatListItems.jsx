@@ -11,7 +11,7 @@ export default function ChatListItems({ id, name, image, active, isOnline, lastM
         <div className="userMeta">
           <p>{name}</p>
           {senderId !== 1 ? 
-          (<span className="activeTime" style={{ color: isRead ? '#8d8a93' : 'black', fontWeight: isRead ? 'normal' : 'bold'  }}>Him: {lastMessage}</span>
+          (<span className="activeTime" style={{ color: isRead ? '#8d8a93' : 'black', fontWeight: isRead ? 'normal' : 'bold'  }}>{lastMessage}</span>
           ) : (
             <span className="activeTime">You: {lastMessage}</span>
           )}
