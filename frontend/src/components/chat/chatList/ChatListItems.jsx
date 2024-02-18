@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Avatar from "./Avatar";
 
-export default function ChatListItems({ id, name, image, active, isOnline, lastMessage, isRead}) {
+export default function ChatListItems({ id, name, image, active, isOnline, lastMessage, isRead, senderId }) {
   return (
     <Link to={`/inbox/${id}`}>
       <div
@@ -10,7 +10,11 @@ export default function ChatListItems({ id, name, image, active, isOnline, lastM
         <Avatar image={image} isOnline={isOnline} />
         <div className="userMeta">
           <p>{name}</p>
-          <span className="activeTime" style={{ color: isRead ? '#ceccd3' : 'black', fontWeight: isRead ? 'normal' : 'bold'  }}>{lastMessage}</span>
+          {senderId !== 1 ? 
+          (<span className="activeTime" style={{ color: isRead ? '#ceccd3' : 'black', fontWeight: isRead ? 'normal' : 'bold'  }}>Him: {lastMessage}</span>
+          ) : (
+            <span className="activeTime">You: {lastMessage}</span>
+          )}
         </div>
       </div>
     </Link>

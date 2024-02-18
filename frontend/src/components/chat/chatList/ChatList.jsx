@@ -33,6 +33,7 @@ export default function ChatList({ contacts, lastMessages }) {
               image={contact.image}
               lastMessage={lastMessage ? lastMessage.message : "No hay mensajes"}
               isRead={lastMessage ? lastMessage.isRead : "Error"}
+              senderId={lastMessage ? lastMessage.sender_profile.id : "Error"}
             />
           );
         })}
