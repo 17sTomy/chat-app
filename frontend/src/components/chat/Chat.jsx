@@ -6,6 +6,7 @@ import axios from 'axios';
 
 export default function Chat() {
   const [chatMessages, setChatMessages] = useState([]);
+  const [lastMessages, setLastMessages] = useState([]);
   const [contacts, setContacts] = useState([]);
   
   const fetchData = async () => {
@@ -17,8 +18,8 @@ export default function Chat() {
     }
   };
   
-  const getContacts = (messages, userId) => {
-    messages.forEach(msg => {
+  const getContacts = (userId) => {
+    chatMessages.forEach(msg => {
       contacts.some(contact => contact.id === msg.receiver_profile.id) ? null : contacts.push(msg.receiver_profile)
       contacts.some(contact => contact.id === msg.sender_profile.id) ? null : contacts.push(msg.sender_profile)
     });
@@ -26,6 +27,17 @@ export default function Chat() {
     const filteredContacts = contacts.filter(contact => contact.id !== userId);
     console.log("Contactos:", filteredContacts);
     return filteredContacts;
+  };
+
+  const getLastMessages = () => {
+    const lastMessagesCopy = [];
+
+    contacts.forEach(contact => {
+      let lastMessage = chatMessages.filter((msg) => msg.receiver_profile.id === contact.id || msg.sender_profile.id === contact.id).pop();
+      lastMessagesCopy.push(lastMessage);
+    });
+
+    return lastMessagesCopy;
   };
 
   useEffect(() => {
@@ -39,14 +51,20 @@ export default function Chat() {
   
   useEffect(() => {
     console.log("Mensajes:", chatMessages);
-    const contactos = getContacts(chatMessages, 1)
+    const contactos = getContacts(1);
     setContacts(contactos)
   }, [chatMessages]);
+  
+  useEffect(() => {
+    const ultimosMensajes = getLastMessages();
+    console.log(ultimosMensajes);
+    setLastMessages(ultimosMensajes);
+  }, [contacts]);
 
 
   return (
     <div className="main__chatbody">
-      <ChatList contacts={contacts} />
+      <ChatList contacts={contacts} lastMessages={lastMessages} />
       <ChatContent contacts={contacts} chatMessages={chatMessages} />
     </div>
   );

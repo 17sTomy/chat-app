@@ -2,7 +2,7 @@ import "./chatList.css";
 import ChatListItems from "./ChatListItems";
 
 
-export default function ChatList({ contacts }) {
+export default function ChatList({ contacts, lastMessages }) {
   return (
     <div className="main__chatlist">
       <div className="chatlist__heading">
@@ -21,6 +21,8 @@ export default function ChatList({ contacts }) {
       </div>
       <div className="chatlist__items">
         {contacts.map((contact) => {
+          const lastMessage = lastMessages.find((msg) => msg.receiver_profile.id === contact.id || msg.sender_profile.id === contact.id)
+
           return (
             <ChatListItems
               key={contact.id}
@@ -29,6 +31,8 @@ export default function ChatList({ contacts }) {
               active={"active"}
               isOnline={"active"}
               image={contact.image}
+              lastMessage={lastMessage ? lastMessage.message : "No hay mensajes"}
+              isRead={lastMessage ? lastMessage.isRead : "Error"}
             />
           );
         })}

@@ -4,58 +4,7 @@ import "./chatContent.css";
 import Avatar from "../chatList/Avatar";
 import ChatItem from "./ChatItem";
 
-// let chatItms = [
-//   {
-//     key: 1,
-//     image:
-//       "https://media.istockphoto.com/id/1194645897/es/vector/retrato-de-una-mujer-fuerte-y-hermosa-de-perfil-con-el-pelo-rubio.jpg?s=612x612&w=0&k=20&c=IH1fHSzti02h2NhwBhUTkZgU9TEJ7a0DCIqr6JFZbe4=",
-//     type: "",
-//     msg: "Hi Tim, How are you?",
-//   },
-//   {
-//     key: 2,
-//     image:
-//       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-//     type: "other",
-//     msg: "I am fine.",
-//   },
-//   {
-//     key: 3,
-//     image:
-//       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-//     type: "other",
-//     msg: "What about you?",
-//   },
-//   {
-//     key: 4,
-//     image:
-//       "https://media.istockphoto.com/id/1194645897/es/vector/retrato-de-una-mujer-fuerte-y-hermosa-de-perfil-con-el-pelo-rubio.jpg?s=612x612&w=0&k=20&c=IH1fHSzti02h2NhwBhUTkZgU9TEJ7a0DCIqr6JFZbe4=",
-//     type: "",
-//     msg: "Awesome these days.",
-//   },
-//   {
-//     key: 5,
-//     image:
-//       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-//     type: "other",
-//     msg: "Finally. What's the plan?",
-//   },
-//   {
-//     key: 6,
-//     image:
-//       "https://media.istockphoto.com/id/1194645897/es/vector/retrato-de-una-mujer-fuerte-y-hermosa-de-perfil-con-el-pelo-rubio.jpg?s=612x612&w=0&k=20&c=IH1fHSzti02h2NhwBhUTkZgU9TEJ7a0DCIqr6JFZbe4=",
-//     type: "",
-//     msg: "what plan mate?",
-//   },
-//   {
-//     key: 7,
-//     image:
-//       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-//     type: "other",
-//     msg: "I'm taliking about the tutorial",
-//   },
-// ];
- 
+
 function ChatContent({ chatMessages, contacts }) {
   const [chat, setChat] = useState([]);
   const [msg, setMsg] = useState(""); 
@@ -178,7 +127,7 @@ function ChatContent({ chatMessages, contacts }) {
         </div>
       ) : (
         <div className="main__chatcontent" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-          <h4>Clickee un chat para empezar o seguir una conversación😃</h4>
+          <h4>Click a chat in order to start or keep a conversation😃</h4>
         </div>
       )}
       </>

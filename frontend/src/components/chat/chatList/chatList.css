@@ -40,7 +40,7 @@
   font-size: 20px;
 }
 .chatlist__items {
-  margin-top: 30px;
+  margin-top: 20px;
   overflow: auto;
   max-height: 90vh;
 }
@@ -109,7 +109,6 @@
 .chatlist__item:hover,
 .chatlist__item.active {
   background: #fff;
-
   border-radius: 10px;
 }
 .isOnline {
