@@ -1,16 +1,13 @@
 from itertools import chain
-
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-
 from rest_framework import status
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework_simplejwt.views import TokenObtainPairView
-
 from api.models import User, Profile, ChatMessage
 from api.serializers import MyTokenObtainPairSerializer, RegisterSerializer, MessageSerializer, ProfileSerializer, UserSerializer
 
@@ -22,6 +19,11 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUser(request):
+    return Response({'response': request.user.username})
     
 
 class GetMessagesListAPIView(generics.ListAPIView):
