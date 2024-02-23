@@ -2,11 +2,11 @@ from django.contrib import admin
 from api.models import User, Profile, ChatMessage
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'email']
+    list_display = ['username', 'email', 'id']
 
 class ProfileAdmin(admin.ModelAdmin):
     list_editable = ['verified']
-    list_display = ['user', 'full_name', 'verified', 'image']
+    list_display = ['user', 'full_name', 'verified', 'image', 'id']
 
 class ChatMessageAdmin(admin.ModelAdmin):
     list_editable = ['is_read', 'message']

@@ -22,8 +22,8 @@ export default function ChatList({ contacts, lastMessages }) {
         {contacts.length === 0 && <h5 style={{ textAlign: "center" }}>Search for a contact 🔍</h5>}
         
         {contacts.map((contact) => {
-          const lastMessage = lastMessages.find((msg) => msg.receiver_profile.id === contact.id || msg.sender_profile.id === contact.id)
-
+          const lastMessage = lastMessages.find((msg) => msg.sender === contact.id || msg.receiver === contact.id)
+          
           return (
             <ChatListItems
               key={contact.id}
@@ -34,7 +34,7 @@ export default function ChatList({ contacts, lastMessages }) {
               image={contact.image}
               lastMessage={lastMessage ? lastMessage.message : "No hay mensajes"}
               isRead={lastMessage ? lastMessage.is_read : "Error"}
-              senderId={lastMessage ? lastMessage.sender_profile.id : "Error"}
+              senderId={lastMessage ? lastMessage.sender : "Error"}
             />
           );
         })}

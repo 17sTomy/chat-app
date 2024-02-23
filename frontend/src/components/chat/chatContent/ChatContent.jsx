@@ -18,7 +18,7 @@ function ChatContent({ chatMessages, contacts }) {
   const getChat = () => {
     const conversation = [];
     chatMessages.forEach((msg) => {
-      if ((msg.sender_profile.id === parseInt(id)) || (msg.receiver_profile.id === parseInt(id))) {
+      if ((msg.sender === parseInt(id)) || (msg.receiver === parseInt(id))) {
         conversation.push(msg)
       }
     });
@@ -86,7 +86,7 @@ function ChatContent({ chatMessages, contacts }) {
     getChat();
     const contact = getContactInfo();
     contact ? setContact(contact) : null;
-  }, [id]);
+  }, [id, chatMessages]);
 
   useEffect(() => {
     contact.id !== undefined ? readMessages() : null;
@@ -99,10 +99,7 @@ function ChatContent({ chatMessages, contacts }) {
             <div className="content__header">
               <div className="blocks">
                 <div className="current-chatting-user">
-                  <Avatar
-                    isOnline="active"
-                    image={contact.image}
-                  />
+                  <Avatar image={contact.image} />
                   <p>{contact.full_name}</p>
                 </div>
               </div>
@@ -119,7 +116,7 @@ function ChatContent({ chatMessages, contacts }) {
                 {chat.map((msg) => (
                   <ChatItem
                   key={msg.id}
-                  user={msg.sender_profile.id === parseInt(id) ? "other" : "me"}
+                  user={msg.sender === parseInt(id) ? "other" : "me"}
                   message={msg}
                   />
                 ))}

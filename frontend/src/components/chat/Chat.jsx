@@ -10,9 +10,9 @@ export default function Chat() {
   const [chatMessages, setChatMessages] = useState([]);
   const [lastMessages, setLastMessages] = useState([]);
   const [contacts, setContacts] = useState([]);
-  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const api = useAxios();
+  const navigate = useNavigate();
   
   const fetchData = async () => {
     try {
@@ -25,10 +25,15 @@ export default function Chat() {
   
   const getContacts = () => {
     chatMessages.forEach(msg => {
-      contacts.some(contact => contact.id === msg.receiver_profile.id) ? null : contacts.push(msg.receiver_profile)
-      contacts.some(contact => contact.id === msg.sender_profile.id) ? null : contacts.push(msg.sender_profile)
-    });
+      contacts.some(contact => contact.id === msg.receiver) 
+        ? null 
+        : contacts.push({...msg.receiver_profile, id: msg.receiver});
 
+      contacts.some(contact => contact.id === msg.sender) 
+        ? null 
+        : contacts.push({...msg.sender_profile, id: msg.sender});
+    });
+    
     const filteredContacts = contacts.filter(contact => contact.id !== user.user_id);
     return filteredContacts;
   };
@@ -37,7 +42,7 @@ export default function Chat() {
     const lastMessagesCopy = [];
 
     contacts.forEach(contact => {
-      let lastMessage = chatMessages.filter((msg) => msg.receiver_profile.id === contact.id || msg.sender_profile.id === contact.id).pop();
+      let lastMessage = chatMessages.filter((msg) => msg.sender === contact.id || msg.receiver === contact.id).pop();
       lastMessagesCopy.push(lastMessage);
     });
 
@@ -47,9 +52,14 @@ export default function Chat() {
   useEffect(() => {
     fetchData();
     window.addEventListener('load', () => navigate("/"));
+
+    const intervalChats = setInterval(fetchData, 1000);
+
+    return () => clearInterval(intervalChats);
   }, []);
   
   useEffect(() => {
+    // console.log(chatMessages);
     const contactos = getContacts();
     setContacts(contactos)
   }, [chatMessages]);
@@ -57,6 +67,7 @@ export default function Chat() {
   useEffect(() => {
     const ultimosMensajes = getLastMessages();
     setLastMessages(ultimosMensajes);
+    // console.log(contacts);
   }, [contacts]);
 
 
