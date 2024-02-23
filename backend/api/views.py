@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from api.models import User, Profile, ChatMessage
 from api.serializers import MyTokenObtainPairSerializer, RegisterSerializer, MessageSerializer, ProfileSerializer
-
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -15,8 +15,9 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
+    parser_classes = (MultiPartParser, FormParser)
     serializer_class = RegisterSerializer
-    
+
 
 class GetMessagesListAPIView(generics.ListAPIView):
     serializer_class = MessageSerializer

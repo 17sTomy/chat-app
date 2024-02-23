@@ -1,7 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from api.models import User, ChatMessage, Profile
 
@@ -28,10 +27,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    profile_picture = serializers.ImageField(required=False)
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'password2')
+        fields = ('email', 'username', 'profile_picture', 'password', 'password2')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -40,6 +40,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
+        profile_picture = validated_data.pop('profile_picture', None)
+
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email']
@@ -47,6 +49,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         user.set_password(validated_data['password'])
         user.save()
+
+        Profile.objects.create(user=user, image=profile_picture)
 
         return user
 

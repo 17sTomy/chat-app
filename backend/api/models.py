@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
@@ -18,24 +17,13 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=1000)
     bio = models.CharField(max_length=100)
-    image = models.ImageField(default="default_user.png")
+    image = models.ImageField(default="default_user.png", blank=True, null=True)
     verified = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if self.full_name == "" or self.full_name == None:
             self.full_name = self.user.username
         super(Profile, self).save(*args, **kwargs)
-
-
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
-
-post_save.connect(create_user_profile, sender=User)
-post_save.connect(save_user_profile, sender=User)
 
 
 class ChatMessage(models.Model):

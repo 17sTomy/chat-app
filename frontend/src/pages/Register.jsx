@@ -21,7 +21,7 @@ function Register() {
   return (
     <div className="auth-wrapper">
       <div className="auth-inner">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <h3>Sign Up</h3>
 
           <div className="mb-3">
@@ -44,6 +44,17 @@ function Register() {
               placeholder="username"
               name="username"
               onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <label>Profile Picture</label>
+            <input
+              type="file"
+              accept="image/*"
+              className="form-control"
+              onChange={(e) => setForm({ ...form, profile_picture: e.target.files[0] })}
               required
             />
           </div>

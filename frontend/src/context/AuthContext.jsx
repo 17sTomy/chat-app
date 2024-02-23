@@ -64,19 +64,20 @@ const AuthProvider = ({ children }) => {
     };
 
     const registerUser = async (formData) => {
-      const { email, username, password, password2 } = formData;
+      const { email, username, profile_picture, password, password2 } = formData;
+      const formDataForServer = new FormData();
+      formDataForServer.append('email', email);
+      formDataForServer.append('username', username);
+      formDataForServer.append('profile_picture', profile_picture, profile_picture.name);
+      formDataForServer.append('password', password);
+      formDataForServer.append('password2', password2);
 
       const response = await fetch("http://127.0.0.1:8000/api/register/", {
         method: "POST",
-        headers: {
-          "Content-Type":"application/json"
-        },
-        body: JSON.stringify({
-          email, username, password, password2
-        })
+        body: formDataForServer,
       });
 
-      if(response.status === 201){
+      if(response.status === 201) {
         navigate("/login")
         swal.fire({
           title: "Registration successful",
