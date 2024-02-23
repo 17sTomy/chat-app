@@ -28,7 +28,7 @@ def getUser(request):
 
 class GetMessagesListAPIView(generics.ListAPIView):
     serializer_class = MessageSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
@@ -47,8 +47,8 @@ class GetMessagesListAPIView(generics.ListAPIView):
         return chats
     
     def get(self, request, *args, **kwargs):
-        # user = request.user
-        # print(user)
+        user = request.user
+        print(user)
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
@@ -56,9 +56,11 @@ class GetMessagesListAPIView(generics.ListAPIView):
 
 class SendMessageCreateAPIView(generics.CreateAPIView):
     serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
 
 class ReadMessagesUpdateAPIView(generics.UpdateAPIView):
     serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         sender_id = self.kwargs['sender_id']

@@ -1,7 +1,6 @@
 import "./chatList.css";
 import ChatListItems from "./ChatListItems";
 
-
 export default function ChatList({ contacts, lastMessages }) {
   return (
     <div className="main__chatlist">
@@ -20,6 +19,8 @@ export default function ChatList({ contacts, lastMessages }) {
         </div>
       </div>
       <div className="chatlist__items">
+        {contacts.length === 0 && <h5 style={{ textAlign: "center" }}>Search for a contact 🔍</h5>}
+        
         {contacts.map((contact) => {
           const lastMessage = lastMessages.find((msg) => msg.receiver_profile.id === contact.id || msg.sender_profile.id === contact.id)
 

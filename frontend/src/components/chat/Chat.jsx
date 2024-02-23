@@ -1,31 +1,34 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./chat.css";
 import ChatList from "./chatList/ChatList";
 import ChatContent from "./chatContent/ChatContent";
-import axios from 'axios';
+import AuthContext from "../../context/authContext";
+import useAxios from "../../hooks/useAxios";
 
 export default function Chat() {
   const [chatMessages, setChatMessages] = useState([]);
   const [lastMessages, setLastMessages] = useState([]);
   const [contacts, setContacts] = useState([]);
+  const { user } = useContext(AuthContext);
+  const api = useAxios();
   
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/get-messages/1/');
+      const response = await api.get(`/get-messages/${user.user_id}/`)
       setChatMessages(response.data)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
   
-  const getContacts = (userId) => {
+  const getContacts = () => {
     chatMessages.forEach(msg => {
       contacts.some(contact => contact.id === msg.receiver_profile.id) ? null : contacts.push(msg.receiver_profile)
       contacts.some(contact => contact.id === msg.sender_profile.id) ? null : contacts.push(msg.sender_profile)
     });
 
-    const filteredContacts = contacts.filter(contact => contact.id !== userId);
-    console.log("Contactos:", filteredContacts);
+    const filteredContacts = contacts.filter(contact => contact.id !== user.user_id);
+    // console.log("Contactos:", filteredContacts);
     return filteredContacts;
   };
 
@@ -50,14 +53,14 @@ export default function Chat() {
   }, []);
   
   useEffect(() => {
-    console.log("Mensajes:", chatMessages);
-    const contactos = getContacts(1);
+    // console.log("Mensajes:", chatMessages);
+    const contactos = getContacts();
     setContacts(contactos)
   }, [chatMessages]);
   
   useEffect(() => {
     const ultimosMensajes = getLastMessages();
-    console.log(ultimosMensajes);
+    // console.log(ultimosMensajes);
     setLastMessages(ultimosMensajes);
   }, [contacts]);
 

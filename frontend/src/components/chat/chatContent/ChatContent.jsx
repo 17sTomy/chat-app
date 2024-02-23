@@ -1,17 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import "./chatContent.css";
 import Avatar from "../chatList/Avatar";
 import ChatItem from "./ChatItem";
-
+import AuthContext from "../../../context/authContext";
+import useAxios from "../../../hooks/useAxios";
 
 function ChatContent({ chatMessages, contacts }) {
+  const messagesEndRef = useRef(null);
   const [chat, setChat] = useState([]);
   const [msg, setMsg] = useState(""); 
   const [contact, setContact] = useState({}); 
-  const messagesEndRef = useRef(null);
+  const { user } = useContext(AuthContext);
   const { id } = useParams();
+  const api = useAxios();
 
   const getChat = () => {
     const conversation = [];
@@ -21,22 +23,22 @@ function ChatContent({ chatMessages, contacts }) {
       }
     });
     setChat(conversation);
-    console.log("Chat con un contacto:", conversation);
+    // console.log("Chat con un contacto:", conversation);
   };
 
   const getContactInfo = () => contacts.find((contact) => contact.id === parseInt(id));
   
   const sendMessage = async () => {
     try {
-      const response = await axios.post(
-        'http://127.0.0.1:8000/api/send-message/', 
+      const response = await api.post(
+        '/send-message/', 
         {
-          sender: 1,
+          sender: user.user_id,
           receiver: contact.id,
           message: msg,
           is_read: false,
         },
-      )
+      );
       let newMsg = response.data;
       setChat([...chat, newMsg]);
       scrollToBottom();
@@ -48,7 +50,7 @@ function ChatContent({ chatMessages, contacts }) {
 
   const readMessages = async () => {
     try {
-      await axios.patch(`http://127.0.0.1:8000/api/read-messages/${1}/${contact.id}/`)
+      await api.patch(`/read-messages/${user.user_id}/${contact.id}/`)
     } catch (error) {
       console.log("Ocurrió un error:", error);
     };

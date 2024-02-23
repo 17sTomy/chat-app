@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import Avatar from "../chatList/Avatar";
 
 export default function ChatItem({ user, message }) {
