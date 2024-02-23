@@ -2,12 +2,13 @@ from itertools import chain
 from django.db.models import Q
 from rest_framework import status
 from rest_framework import generics
+from rest_framework import serializers
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from api.models import User, Profile, ChatMessage
 from api.serializers import MyTokenObtainPairSerializer, RegisterSerializer, MessageSerializer, ProfileSerializer
-from rest_framework.parsers import MultiPartParser, FormParser
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -17,6 +18,18 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = RegisterSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            serializer.save()
+            return Response({"detail": "Registration successful"}, status=status.HTTP_201_CREATED)
+        except serializers.ValidationError as e:
+            return Response({"detail": e.detail}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"detail": f"An error ocurred: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetMessagesListAPIView(generics.ListAPIView):
@@ -74,7 +87,6 @@ class SearchUser(generics.ListAPIView):
 
     def list(self, request, *args, **kwargs):
         username = self.kwargs['username']
-        logged_in_user = self.request.user
         users = Profile.objects.filter(
             Q(user__username__icontains=username) |
             Q(full_name__icontains=username) |

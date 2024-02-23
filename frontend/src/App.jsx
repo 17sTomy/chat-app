@@ -3,7 +3,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { AuthProvider } from "./context/authContext";
-import NavbarLoggedOut from "./components/NavbarLoggedOut";
+import Navbar from "./components/Navbar";
 import Chat from './components/chat/Chat';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -14,7 +14,7 @@ function App() {
     <>
       <BrowserRouter>
         <AuthProvider>
-          <NavbarLoggedOut />
+          <Navbar />
           <Routes>
             <Route path="/login" element={<Login />}/>
             <Route path="/register" element={<Register />}/>
