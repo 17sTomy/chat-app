@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "./chat.css";
 import ChatList from "./chatList/ChatList";
 import ChatContent from "./chatContent/ChatContent";
@@ -9,12 +10,13 @@ export default function Chat() {
   const [chatMessages, setChatMessages] = useState([]);
   const [lastMessages, setLastMessages] = useState([]);
   const [contacts, setContacts] = useState([]);
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const api = useAxios();
   
   const fetchData = async () => {
     try {
-      const response = await api.get(`/get-messages/${user.user_id}/`)
+      const response = await api.get(`/get-messages/`)
       setChatMessages(response.data)
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -28,7 +30,6 @@ export default function Chat() {
     });
 
     const filteredContacts = contacts.filter(contact => contact.id !== user.user_id);
-    // console.log("Contactos:", filteredContacts);
     return filteredContacts;
   };
 
@@ -45,22 +46,16 @@ export default function Chat() {
 
   useEffect(() => {
     fetchData();
-    window.onload = function() {
-       if (window.location.href !== "http://127.0.0.1:5173/inbox") {
-        window.location.href = "http://127.0.0.1:5173/inbox"
-       }
-    };
+    window.addEventListener('load', () => navigate("/"));
   }, []);
   
   useEffect(() => {
-    // console.log("Mensajes:", chatMessages);
     const contactos = getContacts();
     setContacts(contactos)
   }, [chatMessages]);
   
   useEffect(() => {
     const ultimosMensajes = getLastMessages();
-    // console.log(ultimosMensajes);
     setLastMessages(ultimosMensajes);
   }, [contacts]);
 

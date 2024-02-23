@@ -23,7 +23,6 @@ function ChatContent({ chatMessages, contacts }) {
       }
     });
     setChat(conversation);
-    // console.log("Chat con un contacto:", conversation);
   };
 
   const getContactInfo = () => contacts.find((contact) => contact.id === parseInt(id));
@@ -50,7 +49,7 @@ function ChatContent({ chatMessages, contacts }) {
 
   const readMessages = async () => {
     try {
-      await api.patch(`/read-messages/${user.user_id}/${contact.id}/`)
+      await api.patch(`/read-messages/${contact.id}/`)
     } catch (error) {
       console.log("Ocurrió un error:", error);
     };

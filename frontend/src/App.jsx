@@ -18,7 +18,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />}/>
             <Route path="/register" element={<Register />}/>
-            <Route path="/inbox" element={<PrivateRoute />}>
+            <Route path="/" element={<PrivateRoute />}>
               <Route path="" element={<Chat />}/>
               <Route path=":id" element={<Chat />}/>
             </Route>

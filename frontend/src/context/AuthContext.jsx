@@ -21,7 +21,9 @@ const AuthProvider = ({ children }) => {
         : null
     );
 
-    const loginUser = async (email, password) => {
+    const loginUser = async (formData) => {
+      const { email, password } = formData;
+
       const response = await fetch("http://127.0.0.1:8000/api/token/", {
         method: "POST",
         headers:{
@@ -30,17 +32,15 @@ const AuthProvider = ({ children }) => {
         body: JSON.stringify({
             email, password
         })
-      })
+      });
+
       const data = await response.json();
-      console.log(data);
-      console.log(jwtDecode(data.access));
 
       if(response.status === 200){
-        console.log("Logged in");
         setAuthTokens(data);
         setUser(jwtDecode(data.access));
         localStorage.setItem("authTokens", JSON.stringify(data));
-        navigate("/inbox");
+        navigate("/");
         swal.fire({
           title: "Login successful",
           icon: "success",
@@ -51,8 +51,6 @@ const AuthProvider = ({ children }) => {
           showConfirmButton: false,
         });
       } else {    
-        console.log(response.status);
-        console.log("there was a server issue");
         swal.fire({
           title: "Username or password incorrect.",
           icon: "error",
@@ -65,7 +63,9 @@ const AuthProvider = ({ children }) => {
       };
     };
 
-    const registerUser = async (email, username, password, password2) => {
+    const registerUser = async (formData) => {
+      const { email, username, password, password2 } = formData;
+
       const response = await fetch("http://127.0.0.1:8000/api/register/", {
         method: "POST",
         headers: {
@@ -88,8 +88,6 @@ const AuthProvider = ({ children }) => {
           showConfirmButton: false,
         })
       } else {
-        console.log(response.status);
-        console.log("there was a server issue");
         swal.fire({
           title: "An error has occurred " + response.status,
           icon: "error",

@@ -1,15 +1,12 @@
 from itertools import chain
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.decorators import permission_classes, api_view
 from rest_framework_simplejwt.views import TokenObtainPairView
 from api.models import User, Profile, ChatMessage
-from api.serializers import MyTokenObtainPairSerializer, RegisterSerializer, MessageSerializer, ProfileSerializer, UserSerializer
+from api.serializers import MyTokenObtainPairSerializer, RegisterSerializer, MessageSerializer, ProfileSerializer
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -19,11 +16,6 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def getUser(request):
-    return Response({'response': request.user.username})
     
 
 class GetMessagesListAPIView(generics.ListAPIView):
@@ -31,9 +23,7 @@ class GetMessagesListAPIView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']
-        user = get_object_or_404(User, id=user_id)
-
+        user = self.request.user
         message_partners = User.objects.filter(Q(sender__receiver=user) | Q(receiver__sender=user)).distinct()
         chats = []
 
@@ -47,8 +37,6 @@ class GetMessagesListAPIView(generics.ListAPIView):
         return chats
     
     def get(self, request, *args, **kwargs):
-        user = request.user
-        print(user)
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
@@ -63,7 +51,7 @@ class ReadMessagesUpdateAPIView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        sender_id = self.kwargs['sender_id']
+        sender_id = self.request.user.id
         receiver_id = self.kwargs['receiver_id']
 
         return ChatMessage.objects.filter(
@@ -76,18 +64,12 @@ class ReadMessagesUpdateAPIView(generics.UpdateAPIView):
             self.get_queryset().update(is_read=True)
             return Response({'message': 'Mensajes marcados como leídos'})
         return Response({'message': 'No se encontraron mensajes para marcar como leídos'})
-    
-
-class ProfileDetail(generics.RetrieveUpdateAPIView):
-    serializer_class = ProfileSerializer
-    queryset = Profile.objects.all()
-    # permission_classes = [IsAuthenticated]
 
 
 class SearchUser(generics.ListAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
         username = self.kwargs['username']

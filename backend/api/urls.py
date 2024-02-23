@@ -9,9 +9,9 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', views.RegisterView.as_view(), name='auth_register'),
 
-    path("get-messages/<user_id>/", views.GetMessagesListAPIView.as_view()),
+    path("get-messages/", views.GetMessagesListAPIView.as_view()),
     path("send-message/", views.SendMessageCreateAPIView.as_view()),
-    path("read-messages/<sender_id>/<receiver_id>/", views.ReadMessagesUpdateAPIView.as_view()),
+    path("read-messages/<receiver_id>/", views.ReadMessagesUpdateAPIView.as_view()),
 
     path("search/<username>/", views.SearchUser.as_view())
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

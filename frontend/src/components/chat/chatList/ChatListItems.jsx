@@ -3,7 +3,7 @@ import Avatar from "./Avatar";
 
 export default function ChatListItems({ id, name, image, active, isOnline, lastMessage, isRead, senderId }) {
   return (
-    <Link to={`/inbox/${id}`}>
+    <Link to={`/${id}`}>
       <div
         className={`chatlist__item ${active ? active : ""}`}
       >
