@@ -11,8 +11,8 @@ export default function Chat() {
   const [lastMessages, setLastMessages] = useState([]);
   const [contacts, setContacts] = useState([]);
   const { user } = useContext(AuthContext);
-  const api = useAxios();
   const navigate = useNavigate();
+  const api = useAxios();
   
   const fetchData = async () => {
     try {
@@ -52,14 +52,11 @@ export default function Chat() {
   useEffect(() => {
     fetchData();
     window.addEventListener('load', () => navigate("/"));
-
     const intervalChats = setInterval(fetchData, 1000);
-
     return () => clearInterval(intervalChats);
   }, []);
   
   useEffect(() => {
-    // console.log(chatMessages);
     const contactos = getContacts();
     setContacts(contactos)
   }, [chatMessages]);
@@ -67,7 +64,6 @@ export default function Chat() {
   useEffect(() => {
     const ultimosMensajes = getLastMessages();
     setLastMessages(ultimosMensajes);
-    // console.log(contacts);
   }, [contacts]);
 
 

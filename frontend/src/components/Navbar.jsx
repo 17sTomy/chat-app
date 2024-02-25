@@ -1,9 +1,7 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { useContext } from 'react';
 import { Link } from "react-router-dom";
 import AuthContext from '../context/authContext';
-import { jwtDecode  } from 'jwt-decode';
-
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,15 +16,10 @@ import MenuItem from '@mui/material/MenuItem';
 import ChatIcon from '@mui/icons-material/Chat';
 
 function Navbar() {
+  const [anchorElNav, setAnchorElNav] = useState(null);
   const { user, logoutUser } = useContext(AuthContext)
-  const token = localStorage.getItem("authTokens")
-  
-  if (token) {
-    const decoded = jwtDecode(token); 
-    const user_id = decoded.user_id;
-  };
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const token = localStorage.getItem("authTokens")
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -45,7 +38,7 @@ function Navbar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -117,7 +110,7 @@ function Navbar() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },

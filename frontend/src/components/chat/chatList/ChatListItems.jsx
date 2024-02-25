@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 import Avatar from "./Avatar";
 import AuthContext from "../../../context/authContext";
 
-export default function ChatListItems({ id, name, image, active, lastMessage, isRead, senderId }) {
+export default function ChatListItems({ id, name, image, active, lastMessage, isRead, senderId, addContact }) {
   const { user } = useContext(AuthContext);
 
   return (
-    <Link to={`/${id}`}>
-      <div
-        className={`chatlist__item ${active ? active : ""}`}
-      >
+    <Link to={`/${id}`} onClick={addContact}>
+      <div className={`chatlist__item ${active ? active : ""}`}>
         <Avatar image={image} />
         <div className="userMeta">
           <p>{name}</p>
