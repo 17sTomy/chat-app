@@ -3,7 +3,7 @@
 ## Description
 This is a real-time chat application that allows users to engage in instant individual conversations with different users.
 
-![ChatApp Preview](frontend\src\assets\chat-preview.jpeg)
+![ChatApp Preview](frontend/src/assets/chat-preview.jpeg)
 
 ## Installation
 Follow these steps to set up the ChatApp on your local machine:
