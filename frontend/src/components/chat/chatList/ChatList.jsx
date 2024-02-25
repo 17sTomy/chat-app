@@ -6,7 +6,6 @@ import useAxios from "../../../hooks/useAxios";
 import AuthContext from "../../../context/authContext";
 
 export default function ChatList({ contacts, lastMessages }) {
-  const [searching, setSearching] = useState(false);
   const [users, setUsers] = useState([]);
   let refInput = useRef();
   const { user } = useContext(AuthContext);
@@ -24,7 +23,7 @@ export default function ChatList({ contacts, lastMessages }) {
         },
       );
     } catch (error) {
-      console.log("A error ocurred:", error);
+      console.log("An error has ocurred:", error);
       refInput.current.value = "";
     };
     refInput.current.value = "";

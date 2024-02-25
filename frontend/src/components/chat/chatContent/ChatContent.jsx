@@ -43,7 +43,7 @@ function ChatContent({ chatMessages, contacts }) {
       scrollToBottom();
       setMsg("");
     } catch (error) {
-      console.log("Ocurrió un error:", error);
+      console.log("An error has ocurred:", error);
     };
   };
 
@@ -51,7 +51,7 @@ function ChatContent({ chatMessages, contacts }) {
     try {
       await api.patch(`/read-messages/${contact.id}/`)
     } catch (error) {
-      console.log("Ocurrió un error:", error);
+      console.log("An error has ocurred:", error);
     };
   };
   
