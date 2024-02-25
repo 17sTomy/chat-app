@@ -11,11 +11,10 @@ export default function ChatList({ contacts, lastMessages }) {
   let refInput = useRef();
   const { user } = useContext(AuthContext);
   const api = useAxios();
-  console.log(user);
 
   const addContact = async (id) => {
     try {
-      const response = await api.post(
+      await api.post(
         '/send-message/', 
         {
           sender: user.user_id,
@@ -24,10 +23,6 @@ export default function ChatList({ contacts, lastMessages }) {
           is_read: false,
         },
       );
-
-        if (response.status !== 200) {
-
-        }
     } catch (error) {
       console.log("A error ocurred:", error);
       refInput.current.value = "";
@@ -38,15 +33,12 @@ export default function ChatList({ contacts, lastMessages }) {
 
   const handleSearch = async () => {
     let user = refInput.current.value;
-    setSearching(true);
     try {
       const response = await api.get(`/search/${user}/`);
       const result = await response.data;
       setUsers(result);
-      setSearching(false);
     } catch (error) {
       setUsers([]);
-      setSearching(false);
     }
   };
 
